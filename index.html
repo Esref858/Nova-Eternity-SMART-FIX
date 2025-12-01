@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nova Eternity — SMART FIX</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%236a00ff'/><circle cx='50' cy='50' r='30' fill='%2300ffc8'/><circle cx='50' cy='50' r='15' fill='%236a00ff'/></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #020204;
+            --c-1: #6a00ff;
+            --c-2: #00ffc8;
+            --nova-grad: linear-gradient(135deg, var(--c-1), var(--c-2));
+            --font-main: 'Outfit', sans-serif;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: var(--font-main);
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .galaxy-bg {
+            position: fixed;
+            inset: -50%;
+            background: conic-gradient(from 0deg at 50% 50%, #000 0deg, #1f003a 120deg, #6a00ff 180deg, #001f19 240deg, #000 360deg);
+            filter: blur(70px);
+            opacity: 0.6;
+            animation: spinGalaxy 70s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes spinGalaxy { 
+            from { transform: rotate(0deg); } 
+            to { transform: rotate(360deg); } 
+        }
+
+        .particles { 
+            position: fixed; 
+            inset: 0; 
+            pointer-events: none; 
+            z-index: 1; 
+        }
+
+        .star { 
+            position: absolute; 
+            background: white; 
+            border-radius: 50%; 
+            animation: twinkle 4s infinite ease-in-out; 
+        }
+
+        @keyframes twinkle { 
+            0%, 100% { opacity: 0.2; transform: scale(0.8); } 
+            50% { opacity: 1; transform: scale(1.2); } 
+        }
+
+        /* ЛОГОТИП NOVA */
+        .nova-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--nova-grad);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(106, 0, 255, 0.4);
+            margin: 0 auto 20px auto;
+        }
+
+        .nova-logo::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #020204;
+            border-radius: 8px;
+            transform: rotate(45deg);
+        }
+
+        .nova-logo::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: var(--nova-grad);
+            border-radius: 4px;
+            transform: rotate(45deg);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: rotate(45deg) scale(1); }
+            50% { opacity: 0.7; transform: rotate(45deg) scale(1.1); }
+        }
+
+        /* MOBILE FIRST DESIGN */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(12, 12, 18, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            height: 60px;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -1px;
+            background: var(--nova-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowText 3s infinite alternate;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            background: var(--nova-grad);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .brand-logo::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #020204;
+            border-radius: 4px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        @keyframes glowText { 
+            from { filter: drop-shadow(0 0 0px var(--c-1)); } 
+            to { filter: drop-shadow(0 0 10px var(--c-2)); } 
+        }
+
+        .hamburger { 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 8px; 
+            width: 40px;
+            height: 40px;
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hamburger span { 
+            width: 20px; 
+            height: 2px; 
+            background: #fff; 
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* SIDEBAR MOBILE */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 300px;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(12, 12, 18, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s ease-in-out;
+            z-index: 2000;
+            padding: 20px 15px;
+            padding-top: calc(20px + env(safe-area-inset-top));
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .new-chat-btn {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.4s;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .new-chat-btn:active {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .history-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
+            scrollbar-width: none;
+        }
+
+        .history-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .h-item {
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: none;
+            background: transparent;
+            text-align: left;
+            width: 100%;
+        }
+
+        .h-item:active { 
+            background: rgba(255,255,255,0.05); 
+            color: #fff; 
+        }
+
+        .h-item.active { 
+            background: rgba(106, 0, 255, 0.2); 
+            color: #fff; 
+            border: 1px solid rgba(106, 0, 255, 0.4); 
+        }
+
+        .sidebar-footer { 
+            margin-top: auto; 
+            padding-top: 16px; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            display: flex; 
+            gap: 8px; 
+            padding-bottom: env(safe-area-inset-bottom); 
+        }
+
+        .icon-btn { 
+            background: transparent; 
+            border: 1px solid transparent; 
+            color: #aaa; 
+            cursor: pointer; 
+            padding: 12px; 
+            border-radius: 10px; 
+            transition: 0.3s; 
+            border: none;
+            font-size: 18px;
+        }
+        
+        .icon-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* MAIN CHAT AREA */
+        .main-content {
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .chat-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .msg-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            opacity: 0;
+            animation: popUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes popUp { 
+            from { opacity: 0; transform: translateY(30px) scale(0.9); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+
+        .msg-group.user { 
+            flex-direction: row-reverse; 
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+
+        .avatar.ai { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; 
+        }
+
+        .avatar.user { 
+            background: var(--nova-grad); 
+            color: #fff; 
+        }
+
+        .avatar svg { 
+            width: 20px; 
+            height: 20px; 
+        }
+
+        .bubble { 
+            font-size: 16px; 
+            line-height: 1.5; 
+            color: #eee; 
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            max-width: 85%;
+        }
+
+        .user .bubble {
+            background: #1a1a20;
+            padding: 14px 18px;
+            border-radius: 20px;
+            border-bottom-right-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        .bot .bubble { 
+            background: transparent; 
+            padding: 8px 0; 
+            width: 100%; 
+        }
+
+        .generated-image, .user-upload-img {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 10px;
+            display: block;
+        }
+
+        .preview-container {
+            padding: 10px 15px;
+            display: none;
+            width: 100%;
+            animation: slideUp 0.3s ease;
+            position: fixed;
+            bottom: 85px;
+            left: 0;
+            z-index: 100;
+        }
+
+        @keyframes slideUp { 
+            from { transform: translateY(20px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+
+        .preview-box {
+            background: rgba(40,40,50,0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .preview-thumb { 
+            width: 45px; 
+            height: 45px; 
+            object-fit: cover; 
+            border-radius: 8px;
+            flex-shrink: 0; 
+        }
+
+        .preview-close { 
+            background: none; 
+            border: none; 
+            color: #ff5555; 
+            cursor: pointer; 
+            font-weight: bold; 
+            padding: 5px;
+            font-size: 20px;
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container {
+            position: relative;
+            margin-top: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img-loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(20, 20, 25, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .scanner-line {
+            width: 100%;
+            height: 2px;
+            background: var(--nova-grad);
+            box-shadow: 0 0 10px var(--c-1);
+            position: absolute;
+            top: 0;
+            animation: scanDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scanDown { 
+            0% { top: 0%; opacity: 0; } 
+            50% { opacity: 1; } 
+            100% { top: 100%; opacity: 0; } 
+        }
+
+        .liquid-loader { 
+            display: flex; 
+            gap: 6px; 
+            padding: 10px 0; 
+        }
+
+        .drop { 
+            width: 12px; 
+            height: 12px; 
+            background: var(--c-1); 
+            border-radius: 50%; 
+            animation: jump 1s infinite ease-in-out; 
+        }
+
+        .drop:nth-child(2) { 
+            background: var(--c-2); 
+            animation-delay: 0.15s; 
+        }
+
+        .drop:nth-child(3) { 
+            background: #fff; 
+            animation-delay: 0.3s; 
+        }
+
+        @keyframes jump { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-10px); } 
+        }
+
+        /* INPUT AREA - MOBILE OPTIMIZED */
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 15px;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+            background: linear-gradient(to top, rgba(2,2,4,0.98) 70%, transparent);
+            z-index: 1000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .input-wrapper {
+            width: 100%;
+            position: relative;
+            background: rgba(25, 25, 30, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 8px 8px 8px 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-family: var(--font-main);
+            resize: none;
+            max-height: 120px;
+            outline: none;
+            height: 44px;
+            padding: 12px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            line-height: 1.4;
+        }
+
+        textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        .attach-btn {
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            flex-shrink: 0;
+            border-radius: 12px;
+        }
+
+        .attach-btn:active { 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+        }
+
+        /* --- НОВЫЕ СТИЛИ ДЛЯ КНОПОК --- */
+        .mic-active { color: #ff5555 !important; animation: pulseMic 1.5s infinite; }
+        @keyframes pulseMic { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .btn-dl { 
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; 
+            padding: 8px 12px; background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; 
+            color: white; cursor: pointer; text-decoration: none; 
+            font-size: 13px; transition: 0.2s; 
+        }
+        .btn-dl:hover { background: rgba(255,255,255,0.2); }
+
+        .copy-btn { 
+            background: transparent; border: none; color: #777; 
+            cursor: pointer; font-size: 12px; margin-top: 5px; 
+            display: flex; align-items: center; gap: 4px; padding: 5px 0;
+        }
+        .copy-btn:hover { color: #fff; }
+        
+        /* --- СТИЛИ ГАЛЕРЕИ --- */
+        .gallery-modal {
+            position: fixed; inset: 0; z-index: 3000;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            display: none; flex-direction: column; padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .gallery-title { font-size: 24px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .gallery-close { background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
+        
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; overflow-y: auto; padding-bottom: 50px;
+        }
+        .gallery-item {
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative; aspect-ratio: 1;
+            cursor: pointer;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        /* --------------------------- */
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .send-btn:active { 
+            transform: scale(0.95); 
+            background: var(--nova-grad); 
+        }
+
+        .send-btn svg { 
+            width: 22px; 
+            height: 22px; 
+            fill: #000; 
+            transition: 0.3s; 
+        }
+
+        .overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: 0.3s; 
+            z-index: 1500; 
+            backdrop-filter: blur(5px); 
+        }
+
+        .overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
+        .empty-state { 
+            text-align: center; 
+            width: 100%; 
+            pointer-events: none;
+            padding: 0 20px;
+        }
+
+        .empty-logo { 
+            font-size: 42px; 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            margin-bottom: 12px; 
+            background: var(--nova-grad); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        .empty-sub { 
+            font-size: 16px; 
+            color: #777; 
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .welcome-message h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .welcome-message p {
+            color: #aaa;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .feature-list {
+            text-align: left;
+            margin: 15px 0;
+            color: #ccc;
+        }
+
+        .feature-list li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+
+        /* DESKTOP STYLES */
+        @media (min-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                width: 280px;
+                max-width: none;
+            }
+            
+            .main-content {
+                margin-left: 280px;
+                padding-top: 0;
+            }
+            
+            .mobile-header {
+                display: none;
+            }
+            
+            .chat-scroll {
+                padding: 40px 20px 140px 20px;
+                height: calc(100vh - 80px);
+            }
+            
+            .input-container {
+                left: 280px;
+                padding: 16px 20px;
+                padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            }
+            
+            .bubble {
+                max-width: 70%;
+            }
+
+            .empty-state {
+                position: absolute;
+                top: 45%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin-top: 0;
+                width: 100%;
+                max-width: 600px;
+            }
+
+            .empty-logo {
+                font-size: 60px;
+                margin-bottom: 20px;
+            }
+
+            .empty-sub {
+                font-size: 20px;
+                margin-bottom: 40px;
+            }
+
+            .welcome-message {
+                margin-top: 30px;
+                padding: 30px;
+                background: rgba(255,255,255,0.08);
+                border: 1px solid rgba(255,255,255,0.15);
+            }
+
+            .welcome-message h3 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .welcome-message p {
+                font-size: 16px;
+            }
+        }
+
+        /* MOBILE STYLES */
+        @media (max-width: 767px) {
+            .main-content {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .chat-scroll {
+                padding: 80px 15px 120px 15px;
+                height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            }
+            
+            .empty-state {
+                margin-top: 20%;
+            }
+        }
+
+        /* Bootstrap overrides */
+        .btn:focus, .form-control:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        /* Prevent zoom on iOS */
+        textarea {
+            font-size: 16px !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="galaxy-bg"></div>
+<div class="particles" id="particles"></div>
+<div class="overlay" id="overlay"></div>
+
+<header class="mobile-header d-flex align-items-center justify-content-between px-3">
+    <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="brand">
+        <div class="brand-logo"></div>
+        NOVA
+    </div>
+    <div style="width:40px"></div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <button class="new-chat-btn" id="btn-new">
+        <span>+</span> <span>New Chat</span>
+    </button>
+    <div class="history-list" id="history"></div>
+    <div class="sidebar-footer">
+        <button class="icon-btn" id="btn-clear" title="Clear All">🗑️</button>
+        <button class="icon-btn" id="btn-gallery" title="Gallery">🖼️</button>
+        <div style="flex:1"></div>
+        <div style="font-size:12px; color:#666; align-self:center;">NOVA ETERNITY</div>
+    </div>
+</aside>
+
+<div class="main-content">
+    <div class="chat-container">
+        <div class="chat-scroll" id="messages">
+            <div class="empty-state" id="welcome-msg">
+                <div class="nova-logo"></div>
+                <div class="empty-logo">NOVA</div>
+                <div class="empty-sub">Vision AI & Creative Editor</div>
+                
+                <div class="welcome-message">
+                    <h3>👋 Я вижу и рисую!</h3>
+                    <p>Полная версия. Стабильная работа.</p>
+                    
+                    <div class="feature-list">
+                        <strong>Что я умею:</strong>
+                        <ul>
+                            <li>📸 <b>Видеть:</b> Скинь фото задачи или теста.</li>
+                            <li>🎨 <b>Рисовать с нуля:</b> Напиши "Нарисуй..."</li>
+                            <li>✏️ <b>Редактировать:</b> Скинь фото и напиши, что изменить.</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="color: #6a00ff; font-weight: 500;">✨ Загрузи фото или напиши вопрос ✨</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-container" id="preview-cont">
+            <div class="preview-box">
+                <img src="" id="img-preview" class="preview-thumb">
+                <span style="font-size:13px; color:#aaa;">Изображение прикреплено</span>
+                <button class="preview-close" id="btn-remove-img">✕</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <div class="input-wrapper">
+            <input type="file" id="img-upload" accept="image/*" style="display:none">
+            <button class="attach-btn" id="btn-attach" title="Прикрепить изображение">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                </svg>
+            </button>
+            
+            <button class="attach-btn" id="btn-mic" title="Голосовой ввод">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+            
+            <textarea id="input" placeholder="Спроси или опиши, что создать..." rows="1"></textarea>
+            <button class="send-btn" id="btn-send">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="gallery-modal" id="gallery-modal">
+    <div class="gallery-header">
+        <div class="gallery-title">🖼️ Галерея чата</div>
+        <button class="gallery-close" id="gallery-close">✕</button>
+    </div>
+    <div class="gallery-grid" id="gallery-grid">
+        </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+    <defs>
+        <linearGradient id="gradIcon" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6a00ff" />
+            <stop offset="100%" style="stop-color:#00ffc8" />
+        </linearGradient>
+    </defs>
+</svg>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// --- PARTICLES ---
+const pContainer = document.getElementById('particles');
+for(let i=0; i<25; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    star.style.animationDelay = Math.random() * 5 + 's';
+    pContainer.appendChild(star);
+}
+
+const el = {
+    msgs: document.getElementById('messages'),
+    input: document.getElementById('input'),
+    btnSend: document.getElementById('btn-send'),
+    btnAttach: document.getElementById('btn-attach'),
+    btnMic: document.getElementById('btn-mic'),
+    imgUpload: document.getElementById('img-upload'),
+    previewCont: document.getElementById('preview-cont'),
+    imgPreview: document.getElementById('img-preview'),
+    btnRemoveImg: document.getElementById('btn-remove-img'),
+    btnNew: document.getElementById('btn-new'),
+    btnClear: document.getElementById('btn-clear'),
+    // ЭЛЕМЕНТЫ ГАЛЕРЕИ
+    btnGallery: document.getElementById('btn-gallery'),
+    galleryModal: document.getElementById('gallery-modal'),
+    galleryGrid: document.getElementById('gallery-grid'),
+    galleryClose: document.getElementById('gallery-close'),
+    // ----------------
+    hamburger: document.getElementById('hamburger'),
+    sidebar: document.getElementById('sidebar'),
+    overlay: document.getElementById('overlay'),
+    history: document.getElementById('history'),
+    welcome: document.getElementById('welcome-msg')
+};
+
+let state = { chats: [], current: -1 };
+let currentImageBase64 = null;
+let currentImgDims = { w: 1024, h: 1024 }; 
+
+// --- ФУНКЦИИ КОПИРОВАНИЯ И СКАЧИВАНИЯ ---
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => alert('Текст скопирован!'));
+}
+
+function downloadImg(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Nova_Image_${Date.now()}.png`;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// --- ЛОГИКА ГАЛЕРЕИ ---
+el.btnGallery.onclick = () => {
+    if(state.current < 0) return alert('Сначала выберите чат!');
+    el.galleryGrid.innerHTML = '';
+    const msgs = state.chats[state.current].messages;
+    let found = false;
+
+    msgs.forEach(m => {
+        let src = null;
+        // 1. Загруженные пользователем
+        if(m.image) src = m.image;
+        // 2. Сгенерированные ботом
+        else if(m.role === 'assistant' && m.text) {
+            // Ищем !IMG: в любом месте текста с регистронезависимостью
+            const imgMatch = m.text.match(/!IMG:\s*([^\n]+)/i);
+            if (imgMatch) {
+                 const p = imgMatch[1].trim().replace(/[*_]/g, ''); // Убираем markdown мусор
+                 src = `https://image.pollinations.ai/prompt/${encodeURIComponent(p)}?nologo=true&model=flux&seed=${m.seed}&width=${m.w||1024}&height=${m.h||1024}`;
+            }
+        }
+
+        if(src) {
+            found = true;
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.innerHTML = `<img src="${src}" onclick="downloadImg('${src}')" title="Нажми чтобы скачать">`;
+            el.galleryGrid.appendChild(div);
+        }
+    });
+
+    if(!found) el.galleryGrid.innerHTML = '<div style="color:#777; width:100%; text-align:center; grid-column: 1/-1;">Нет изображений в этом чате</div>';
+    el.galleryModal.style.display = 'flex';
+    if(window.innerWidth <= 768) toggleMenu(); // Закрыть меню на мобиле
+};
+
+el.galleryClose.onclick = () => el.galleryModal.style.display = 'none';
+// ----------------------
+
+// --- ГОЛОСОВОЙ ВВОД ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'ru-RU';
+    recognition.continuous = false;
+    
+    recognition.onstart = () => el.btnMic.classList.add('mic-active');
+    recognition.onend = () => el.btnMic.classList.remove('mic-active');
+    recognition.onresult = (event) => {
+        const t = event.results[0][0].transcript;
+        el.input.value += (el.input.value ? ' ' : '') + t;
+        el.input.style.height = 'auto'; 
+        el.input.style.height = Math.min(el.input.scrollHeight, 120) + 'px';
+    };
+    
+    el.btnMic.onclick = () => recognition.start();
+} else {
+    el.btnMic.style.display = 'none'; 
+}
+
+// Mobile optimizations
+function setupMobileOptimizations() {
+    el.input.addEventListener('focus', () => { setTimeout(() => { scrollToBottom(); }, 350); });
+    let initialHeight = window.innerHeight;
+    window.addEventListener('resize', () => {
+        if (window.innerHeight < initialHeight - 200) {
+            document.body.style.height = '100vh';
+            setTimeout(scrollToBottom, 100);
+        } else {
+            document.body.style.height = '';
+        }
+    });
+}
+
+el.btnAttach.onclick = () => el.imgUpload.click();
+el.imgUpload.onchange = function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            currentImageBase64 = reader.result;
+            const i = new Image();
+            i.onload = () => {
+                currentImgDims.w = i.width;
+                currentImgDims.h = i.height;
+            };
+            i.src = currentImageBase64;
+            el.imgPreview.src = currentImageBase64;
+            el.previewCont.style.display = 'block';
+            setTimeout(scrollToBottom, 100);
+        }
+        reader.readAsDataURL(file);
+    }
+};
+el.btnRemoveImg.onclick = () => { currentImageBase64 = null; el.imgUpload.value = ''; el.previewCont.style.display = 'none'; };
+function toggleMenu() {
+    const isOpen = el.sidebar.classList.contains('open');
+    el.sidebar.classList.toggle('open', !isOpen);
+    el.overlay.classList.toggle('active', !isOpen);
+    document.body.style.overflow = !isOpen ? 'hidden' : '';
+}
+el.hamburger.onclick = toggleMenu;
+el.overlay.onclick = toggleMenu;
+el.overlay.addEventListener('click', toggleMenu);
+function save() { localStorage.setItem('nova_eternity_v3_fixed', JSON.stringify(state)); }
+function load() {
+    const d = localStorage.getItem('nova_eternity_v3_fixed');
+    if(d) { try { state = JSON.parse(d); } catch(e){ state = {chats:[], current:-1}; } renderHistory(); renderChat(); }
+}
+
+function renderHistory() {
+    el.history.innerHTML = '';
+    state.chats.forEach((c, i) => {
+        const div = document.createElement('button');
+        div.className = `h-item ${i === state.current ? 'active' : ''}`;
+        div.textContent = c.name || 'Chat ' + (i + 1);
+        div.onclick = () => { state.current = i; renderHistory(); renderChat(); if(window.innerWidth <= 768) toggleMenu(); };
+        el.history.appendChild(div);
+    });
+}
+
+function renderChat() {
+    el.msgs.innerHTML = '';
+    if(state.current < 0 || !state.chats[state.current] || state.chats[state.current].messages.length === 0) {
+        el.msgs.appendChild(el.welcome);
+        el.welcome.style.display = 'block';
+        return;
+    }
+    el.welcome.style.display = 'none';
+    state.chats[state.current].messages.forEach(m => createMsgNode(m));
+    scrollToBottom();
+}
+
+function createMsgNode(m) {
+    const role = m.role;
+    const text = m.text;
+    const imageSrc = m.image;
+    const seed = m.seed;
+    
+    const isUser = role === 'user';
+    const group = document.createElement('div');
+    group.className = `msg-group ${isUser ? 'user' : 'bot'}`;
+    
+    const ava = document.createElement('div');
+    ava.className = `avatar ${isUser ? 'user' : 'ai'}`;
+    
+    if(isUser) {
+        ava.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    } else {
+        ava.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/></svg>`;
+    }
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    
+    if (imageSrc && isUser) {
+        const usrImg = document.createElement('img');
+        usrImg.src = imageSrc;
+        usrImg.className = 'user-upload-img';
+        usrImg.loading = 'lazy';
+        bubble.appendChild(usrImg);
+        if(text) {
+            const caption = document.createElement('div');
+            caption.style.marginTop = '10px';
+            caption.innerHTML = formatText(text);
+            bubble.appendChild(caption);
+        }
+    }
+    // --- ИСПРАВЛЕНИЕ: Ищем !IMG: в любом месте текста, даже если бот болтает ---
+    else if (text && /!IMG:/i.test(text)) {
+        // Регулярное выражение: ищет !IMG: и берет всё до конца строки или перевода строки
+        const imgMatch = text.match(/!IMG:\s*([^\n]+)/i);
+        
+        if (imgMatch) {
+            let prompt = imgMatch[1].trim();
+            prompt = prompt.replace(/[*_]/g, ''); // Убираем Markdown символы (*, _)
+            
+            const encoded = encodeURIComponent(prompt);
+            
+            const finalSeed = seed || Math.floor(Math.random() * 999999);
+            let finalW = m.w || 1024;
+            let finalH = m.h || 1024;
+            const maxDim = 1280;
+            
+            if(finalW > maxDim || finalH > maxDim) {
+                 const ratio = finalW / finalH;
+                 if(ratio > 1) { finalW = maxDim; finalH = Math.round(maxDim / ratio); }
+                 else { finalH = maxDim; finalW = Math.round(maxDim * ratio); }
+            }
+            
+            const imgUrl = `https://image.pollinations.ai/prompt/${encoded}?nologo=true&model=flux&seed=${finalSeed}&width=${finalW}&height=${finalH}`;
+            const imgId = 'gen-' + finalSeed;
+            const loaderId = 'load-' + finalSeed;
+            
+            bubble.innerHTML = `
+                <div style="margin-bottom: 10px;">🎨 Создаю изображение...</div>
+                <div style="font-size:10px; opacity:0.6; margin-bottom:5px">Flux • ${finalW}x${finalH}</div>
+                <div class="image-container">
+                    <div class="img-loading-overlay" id="${loaderId}">
+                        <div class="scanner-line"></div>
+                        <div style="margin-top: 20px; color: #fff;">Рендеринг (High Quality)...</div>
+                    </div>
+                    <img src="${imgUrl}" id="${imgId}" class="generated-image" alt="Art" loading="lazy" />
+                </div>
+                
+                <button class="btn-dl" onclick="downloadImg('${imgUrl}')">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Скачать HD
+                </button>`;
+            
+            setTimeout(() => {
+                const iEl = document.getElementById(imgId);
+                const lEl = document.getElementById(loaderId);
+                if(iEl && lEl) {
+                    const hide = () => { lEl.style.display='none'; iEl.classList.add('loaded'); };
+                    if (iEl.complete && iEl.naturalHeight !== 0) {
+                        hide();
+                    } else {
+                        iEl.onload = () => { hide(); scrollToBottom(); };
+                        iEl.onerror = () => { lEl.innerHTML = '<div style="color:red; padding: 20px; text-align: center;">Ошибка генерации изображения</div>'; };
+                    }
+                }
+            }, 50);
+        }
+    } 
+    // --- Иначе, если просто текст ---
+    else if (text) {
+        bubble.innerHTML = formatText(text);
+        if(!isUser) {
+            const safeText = text.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '📋 Копировать';
+            copyBtn.onclick = () => copyText(text);
+            bubble.appendChild(copyBtn);
+        }
+    }
+    
+    group.appendChild(ava);
+    group.appendChild(bubble);
+    el.msgs.appendChild(group);
+}
+
+function createLoader() {
+    const loader = document.createElement('div');
+    loader.id = 'temp-loader';
+    loader.className = 'msg-group bot';
+    loader.innerHTML = `<div class="avatar ai"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/></svg></div><div class="bubble"><div class="liquid-loader"><div class="drop"></div><div class="drop"></div><div class="drop"></div></div></div>`;
+    el.msgs.appendChild(loader);
+    scrollToBottom();
+}
+
+function scrollToBottom() { setTimeout(() => { el.msgs.scrollTop = el.msgs.scrollHeight; }, 50); }
+function formatText(t) { return (t || "").replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>'); }
+
+async function send() {
+    const txt = el.input.value.trim();
+    const imgData = currentImageBase64;
+    const dims = {...currentImgDims};
+    
+    if(!txt && !imgData) return;
+    
+    if(state.current < 0) {
+        state.chats.push({ name: txt ? txt.slice(0, 20) : "New Chat", messages: [] });
+        state.current = state.chats.length - 1;
+        renderHistory();
+    }
+    
+    state.chats[state.current].messages.push({ role: 'user', text: txt, image: imgData });
+    el.input.value = '';
+    el.input.style.height = '44px';
+    currentImageBase64 = null;
+    el.previewCont.style.display = 'none';
+    el.imgUpload.value = '';
+    
+    renderChat();
+    createLoader();
+    
+    try {
+        // --- ОБНОВЛЕННЫЕ МОЗГИ БОТА (С БАЛАНСОМ) ---
+        const systemPrompt = `You are Nova, a helpful AI Assistant.
+
+        DECISION LOGIC:
+        1. IF user wants to chat (e.g., "Hello", "How are you", "What is code"):
+           - Reply with text naturally.
+           - DO NOT start with !IMG:
+
+        2. IF user asks to DRAW/GENERATE/CREATE image:
+           - IGNORE any previous context unless specified.
+           - Output ONLY command: "!IMG: <detailed_description_in_english>".
+           - NO CHAT with the command.
+        
+        Example 1:
+        User: Hello
+        You: Hello! How can I help you today?
+
+        Example 2:
+        User: Draw a cat
+        You: !IMG: a fluffy cat sitting on a rug
+        `;
+
+        const messages = [
+             { role: 'system', content: systemPrompt },
+             ...state.chats[state.current].messages.map(m => {
+                 if (m.image) {
+                     return {
+                         role: m.role,
+                         content: [
+                             { type: "text", text: m.text || "Replicate this image" },
+                             { type: "image_url", image_url: { url: m.image } }
+                         ]
+                     };
+                 } else {
+                     return { role: m.role, content: m.text };
+                 }
+             })
+        ];
+
+        const res = await fetch('https://text.pollinations.ai/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                messages: messages,
+                model: 'openai', 
+                jsonMode: false
+            })
+        });
+
+        if (!res.ok) throw new Error("Server Error");
+        
+        const reply = await res.text();
+        const loader = document.getElementById('temp-loader');
+        if(loader) loader.remove();
+
+        const fixedSeed = Math.floor(Math.random() * 9999999);
+        
+        state.chats[state.current].messages.push({ 
+            role: 'assistant', 
+            text: reply,
+            seed: fixedSeed,
+            w: imgData ? dims.w : 1024,
+            h: imgData ? dims.h : 1024
+        });
+        
+        renderChat();
+        save();
+    } catch(e) {
+        const loader = document.getElementById('temp-loader');
+        if(loader) loader.remove();
+        alert('Ошибка соединения. Попробуйте еще раз.');
+    }
+}
+
+el.btnSend.onclick = send;
+el.input.onkeydown = (e) => { if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+el.input.oninput = function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px'; };
+el.btnNew.onclick = () => { state.current = -1; renderHistory(); renderChat(); if(window.innerWidth <= 768) toggleMenu(); };
+el.btnClear.onclick = () => { if(confirm('Удалить все чаты?')) { state.chats = []; state.current = -1; save(); renderHistory(); renderChat(); } };
+
+setupMobileOptimizations();
+load();
+window.addEventListener('popstate', function() { if (el.sidebar.classList.contains('open')) { toggleMenu(); } });
+</script>
+</body>
+</html>
